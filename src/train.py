@@ -3,6 +3,8 @@ import conf.config as cf
 import os,cPickle,random
 from utils import createDocVec
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.externals import joblib
+
 def getTrainSet():
     f = file('table_idf.pkl','r')
     table_idf = cPickle.load(f)
@@ -79,9 +81,10 @@ def train():
     X,Y = getTrainSet()
     test_x,test_y = getTestSet()
     clf = model.fit(X,Y)
+    joblib.dump(clf,'../model/gbdt_v1.m',compress=3)
     return clf.score(test_x,test_y)
     
     
 if __name__=='__main__':
-    print train()
+    print 'Accuracy:%f'%train()
     
